@@ -24,6 +24,9 @@ let selectedTopicId = null;
 let selectedLessonIndex = 0;
 let currentAdminUser = null;
 
+// Add teacher/admin emails here. Students will NOT see the Admin button.
+const ADMIN_EMAILS = ["admin@gmail.com", "greenlamp.lk@gmail.com"];
+
 const dashboardView = document.getElementById("dashboardView");
 const courseView = document.getElementById("courseView");
 const adminView = document.getElementById("adminView");
@@ -43,6 +46,12 @@ const topicSelect = document.getElementById("topicSelect");
 const adminContentList = document.getElementById("adminContentList");
 const toast = document.getElementById("toast");
 
+const loginView = document.getElementById("loginView");
+const studentEmailInput = document.getElementById("studentEmailInput");
+const studentPasswordInput = document.getElementById("studentPasswordInput");
+const studentLoginBtn = document.getElementById("studentLoginBtn");
+const studentLogoutBtn = document.getElementById("studentLogoutBtn");
+
 document.getElementById("homeBtn").addEventListener("click", showDashboard);
 document.getElementById("adminBtn").addEventListener("click", showAdmin);
 document.getElementById("backBtn").addEventListener("click", showDashboard);
@@ -53,10 +62,35 @@ document.getElementById("nextLessonBtn").addEventListener("click", goToNextLesso
 document.getElementById("addTopicBtn").addEventListener("click", addTopicToFirebase);
 document.getElementById("addLessonBtn").addEventListener("click", addLessonToFirebase);
 
+studentLoginBtn.addEventListener("click", loginStudent);
+studentLogoutBtn.addEventListener("click", logoutStudent);
+
 createAdminLoginUI();
 
 onAuthStateChanged(auth, (user) => {
   currentAdminUser = user;
+
+  if (user) {
+    loginView.classList.remove("active");
+    dashboardView.classList.add("active");
+    studentLogoutBtn.classList.remove("logout-hidden");
+
+    if (isAdminUser()) {
+      document.getElementById("adminBtn").classList.remove("admin-hidden");
+    } else {
+      document.getElementById("adminBtn").classList.add("admin-hidden");
+    }
+
+    loadTopicsFromFirebase();
+  } else {
+    dashboardView.classList.remove("active");
+    courseView.classList.remove("active");
+    adminView.classList.remove("active");
+    loginView.classList.add("active");
+    studentLogoutBtn.classList.add("logout-hidden");
+    document.getElementById("adminBtn").classList.add("admin-hidden");
+  }
+
   updateAdminAccessUI();
 });
 
@@ -113,6 +147,39 @@ async function loadTopicsFromFirebase() {
   } catch (error) {
     console.error("Firebase Error:", error);
     showToast("Firebase loading error. Check console.");
+  }
+}
+
+
+function isAdminUser() {
+  return currentAdminUser && ADMIN_EMAILS.includes(currentAdminUser.email);
+}
+
+async function loginStudent() {
+  const email = studentEmailInput.value.trim();
+  const password = studentPasswordInput.value.trim();
+
+  if (!email || !password) {
+    showToast("Please enter email and password.");
+    return;
+  }
+
+  try {
+    await signInWithEmailAndPassword(auth, email, password);
+    showToast("Login successful.");
+  } catch (error) {
+    console.error(error);
+    showToast("Login failed. Please check your email/password.");
+  }
+}
+
+async function logoutStudent() {
+  try {
+    await signOut(auth);
+    showToast("Logged out.");
+  } catch (error) {
+    console.error(error);
+    showToast("Logout failed.");
   }
 }
 
@@ -182,11 +249,11 @@ function updateAdminAccessUI() {
 
   adminCards.forEach(card => {
     if (card.id !== "adminLoginBox" && card.id !== "adminLogoutBox") {
-      card.style.display = currentAdminUser ? "block" : "none";
+      card.style.display = isAdminUser() ? "block" : "none";
     }
   });
 
-  if (currentAdminUser) {
+  if (isAdminUser()) {
     loginBox.style.display = "none";
     logoutBox.style.display = "block";
     adminUserText.textContent = `Logged in as: ${currentAdminUser.email}`;
@@ -209,6 +276,11 @@ function showDashboard() {
 }
 
 function showAdmin() {
+  if (!isAdminUser()) {
+    showToast("Admin access is only for teachers.");
+    return;
+  }
+
   renderTopicSelect();
   renderAdminContentList();
   updateAdminAccessUI();
@@ -394,7 +466,7 @@ function renderAdminContentList() {
 }
 
 async function addTopicToFirebase() {
-  if (!currentAdminUser) {
+  if (!isAdminUser()) {
     showToast("Please login as admin first.");
     return;
   }
@@ -424,7 +496,7 @@ async function addTopicToFirebase() {
 }
 
 async function addLessonToFirebase() {
-  if (!currentAdminUser) {
+  if (!isAdminUser()) {
     showToast("Please login as admin first.");
     return;
   }
@@ -466,7 +538,7 @@ async function addLessonToFirebase() {
 }
 
 window.deleteLessonFromFirebase = async function (lessonId) {
-  if (!currentAdminUser) {
+  if (!isAdminUser()) {
     showToast("Please login as admin first.");
     return;
   }
@@ -479,7 +551,7 @@ window.deleteLessonFromFirebase = async function (lessonId) {
 };
 
 window.deleteTopicFromFirebase = async function (topicId) {
-  if (!currentAdminUser) {
+  if (!isAdminUser()) {
     showToast("Please login as admin first.");
     return;
   }
@@ -540,4 +612,4 @@ function showToast(message) {
   }, 2500);
 }
 
-loadTopicsFromFirebase();
+// Topics load after successful login.

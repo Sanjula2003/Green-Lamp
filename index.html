@@ -30,12 +30,44 @@
     <div class="top-actions">
       <button id="homeBtn" class="btn secondary">Student Dashboard</button>
       <button id="adminBtn" class="btn primary">Admin</button>
+      <button id="studentLogoutBtn" class="btn secondary logout-hidden">Logout</button>
     </div>
   </header>
 
   <main class="container">
 
-    <section id="dashboardView" class="view active">
+    <!-- Student Login View -->
+    <section id="loginView" class="view active">
+      <div class="login-wrapper">
+        <div class="login-card">
+          <img src="logo.png" alt="Green Lamp Logo" class="login-logo-img" />
+          <h2>Welcome to Green Lamp</h2>
+          <p class="login-subtitle">Login to access your activated courses and learning materials.</p>
+
+          <div class="login-form">
+            <input id="studentEmailInput" type="email" placeholder="Student email address" autocomplete="email" />
+            <input id="studentPasswordInput" type="password" placeholder="Password" autocomplete="current-password" />
+            <button id="studentLoginBtn" class="btn primary login-btn">Login to Courses</button>
+          </div>
+
+          <div class="access-box">
+            <h3>Need course access?</h3>
+            <p>
+              To activate/login courses, please email us using your official university email address via Outlook.
+              This helps us confirm that you are really an NSBM student.
+            </p>
+            <p>
+              After verification, we will manually create your Firebase Authentication account and send your email
+              and created password so you can login here.
+            </p>
+            <a class="request-access-link" href="mailto:greenlamp.lk@gmail.com?subject=Green%20Lamp%20Course%20Access%20Request">Email Us for Access</a>
+          </div>
+        </div>
+      </div>
+    </section>
+
+
+    <section id="dashboardView" class="view">
       <div class="section-title">
         <h2>Faculty Of Computing </h2>
         <p>1st Year | 1st Semester</p>
