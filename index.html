@@ -13,6 +13,42 @@
 </head>
 <body>
 
+  <!-- Student Login View -->
+  <section id="loginView" class="login-view">
+    <div class="login-shell">
+      <div class="login-card">
+        <div class="login-logo-wrap">
+          <div class="login-logo">💡</div>
+        </div>
+
+        <h2>Welcome to Green Lamp</h2>
+        <p class="login-subtitle">Login to access your activated courses and learning materials.</p>
+
+        <div class="login-form">
+          <input id="studentEmailInput" type="email" placeholder="Student email address" autocomplete="email" />
+          <input id="studentPasswordInput" type="password" placeholder="Password" autocomplete="current-password" />
+          <button id="studentLoginBtn" class="btn primary login-main-btn">Login to Courses</button>
+        </div>
+
+        <div class="access-note">
+          <h3>Need course access?</h3>
+          <p>
+            To activate/login courses, please email us using your official university email address via Outlook.
+            This helps us confirm that you are really an NSBM student.
+          </p>
+          <p>
+            After verification, we will manually create your Firebase Authentication account and send your email
+            and created password so you can login here.
+          </p>
+          <a class="request-access-btn" href="mailto:greenlamp.lk@gmail.com?subject=Green%20Lamp%20Course%20Access%20Request">
+            Email Us for Access
+          </a>
+        </div>
+      </div>
+    </div>
+  </section>
+
+
   <header class="topbar">
     <div class="brand">
 
@@ -30,10 +66,11 @@
     <div class="top-actions">
       <button id="homeBtn" class="btn secondary">Student Dashboard</button>
       <button id="adminBtn" class="btn primary">Admin</button>
+          <button id="studentLogoutBtn" class="btn secondary logout-hidden">Logout</button>
     </div>
   </header>
 
-  <main class="container">
+  <main id="appContent" class="container app-hidden">
 
     <section id="dashboardView" class="view active">
       <div class="section-title">

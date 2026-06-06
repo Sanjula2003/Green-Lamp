@@ -43,6 +43,15 @@ const topicSelect = document.getElementById("topicSelect");
 const adminContentList = document.getElementById("adminContentList");
 const toast = document.getElementById("toast");
 
+
+const loginView = document.getElementById("loginView");
+const appContent = document.getElementById("appContent");
+const studentEmailInput = document.getElementById("studentEmailInput");
+const studentPasswordInput = document.getElementById("studentPasswordInput");
+const studentLoginBtn = document.getElementById("studentLoginBtn");
+const studentLogoutBtn = document.getElementById("studentLogoutBtn");
+
+
 document.getElementById("homeBtn").addEventListener("click", showDashboard);
 document.getElementById("adminBtn").addEventListener("click", showAdmin);
 document.getElementById("backBtn").addEventListener("click", showDashboard);
@@ -53,11 +62,28 @@ document.getElementById("nextLessonBtn").addEventListener("click", goToNextLesso
 document.getElementById("addTopicBtn").addEventListener("click", addTopicToFirebase);
 document.getElementById("addLessonBtn").addEventListener("click", addLessonToFirebase);
 
+studentLoginBtn.addEventListener("click", loginStudent);
+studentLogoutBtn.addEventListener("click", logoutStudent);
+
 createAdminLoginUI();
+
 
 onAuthStateChanged(auth, (user) => {
   currentAdminUser = user;
-  updateAdminAccessUI();
+
+  if (user) {
+    loginView.classList.add("login-hidden");
+    appContent.classList.remove("app-hidden");
+    studentLogoutBtn.classList.remove("logout-hidden");
+    updateAdminAccessUI();
+    loadTopicsFromFirebase();
+  } else {
+    appContent.classList.add("app-hidden");
+    loginView.classList.remove("login-hidden");
+    studentLogoutBtn.classList.add("logout-hidden");
+    currentAdminUser = null;
+    updateAdminAccessUI();
+  }
 });
 
 async function loadTopicsFromFirebase() {
@@ -113,6 +139,35 @@ async function loadTopicsFromFirebase() {
   } catch (error) {
     console.error("Firebase Error:", error);
     showToast("Firebase loading error. Check console.");
+  }
+}
+
+
+async function loginStudent() {
+  const email = studentEmailInput.value.trim();
+  const password = studentPasswordInput.value.trim();
+
+  if (!email || !password) {
+    showToast("Please enter email and password.");
+    return;
+  }
+
+  try {
+    await signInWithEmailAndPassword(auth, email, password);
+    showToast("Login successful.");
+  } catch (error) {
+    console.error(error);
+    showToast("Login failed. Please check your email/password.");
+  }
+}
+
+async function logoutStudent() {
+  try {
+    await signOut(auth);
+    showToast("Logged out.");
+  } catch (error) {
+    console.error(error);
+    showToast("Logout failed.");
   }
 }
 
@@ -540,4 +595,4 @@ function showToast(message) {
   }, 2500);
 }
 
-loadTopicsFromFirebase();
+// Topics load after successful login.

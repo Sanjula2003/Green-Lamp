@@ -518,3 +518,128 @@ select:focus {
     font-size: 24px;
   }
 }
+
+
+
+/* ==============================
+   Student Login Page
+================================= */
+
+.app-hidden {
+  display: none !important;
+}
+
+.login-view {
+  min-height: calc(100vh - 80px);
+  display: grid;
+  place-items: center;
+  padding: 32px 18px;
+  animation: fadeIn 0.45s ease;
+}
+
+.login-view.login-hidden {
+  display: none !important;
+}
+
+.login-shell {
+  width: min(980px, 100%);
+  display: grid;
+  place-items: center;
+}
+
+.login-card {
+  width: min(520px, 100%);
+  background:
+    radial-gradient(circle at top left, rgba(34, 197, 94, 0.16), transparent 35%),
+    linear-gradient(180deg, rgba(23, 32, 51, 0.98), rgba(17, 24, 39, 0.98));
+  border: 1px solid var(--border);
+  border-radius: 28px;
+  padding: 34px;
+  box-shadow: var(--shadow);
+  text-align: center;
+}
+
+.login-logo-wrap {
+  display: flex;
+  justify-content: center;
+  margin-bottom: 18px;
+}
+
+.login-logo {
+  width: 78px;
+  height: 78px;
+  display: grid;
+  place-items: center;
+  border-radius: 24px;
+  font-size: 38px;
+  background: rgba(34, 197, 94, 0.14);
+  border: 1px solid rgba(34, 197, 94, 0.28);
+  box-shadow: 0 18px 36px rgba(34, 197, 94, 0.13);
+}
+
+.login-card h2 {
+  font-size: 30px;
+  margin-bottom: 8px;
+}
+
+.login-subtitle {
+  color: var(--muted);
+  line-height: 1.6;
+  margin-bottom: 24px;
+}
+
+.login-form {
+  display: grid;
+  gap: 12px;
+  margin-bottom: 22px;
+}
+
+.login-main-btn {
+  width: 100%;
+  padding: 14px 18px;
+}
+
+.access-note {
+  text-align: left;
+  background: rgba(255, 255, 255, 0.045);
+  border: 1px solid var(--border);
+  border-radius: 20px;
+  padding: 18px;
+}
+
+.access-note h3 {
+  margin-bottom: 10px;
+}
+
+.access-note p {
+  color: var(--muted);
+  line-height: 1.65;
+  margin-bottom: 12px;
+  font-size: 14px;
+}
+
+.request-access-btn {
+  display: inline-block;
+  text-decoration: none;
+  color: white;
+  font-weight: 700;
+  background: linear-gradient(135deg, var(--success), var(--primary-dark));
+  padding: 11px 14px;
+  border-radius: 12px;
+  margin-top: 4px;
+}
+
+.logout-hidden {
+  display: none !important;
+}
+
+@media (max-width: 620px) {
+  .login-card {
+    padding: 24px;
+    border-radius: 22px;
+  }
+
+  .login-card h2 {
+    font-size: 24px;
+  }
+}
