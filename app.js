@@ -25,7 +25,7 @@ let selectedLessonIndex = 0;
 let currentAdminUser = null;
 
 // Add teacher/admin emails here. Students will NOT see the Admin button.
-const ADMIN_EMAILS = ["admin@gmail.com", "greenlamp.lk@gmail.com"];
+const ADMIN_EMAILS = ["greenlamp.lk@gmail.com"];
 
 const dashboardView = document.getElementById("dashboardView");
 const courseView = document.getElementById("courseView");
